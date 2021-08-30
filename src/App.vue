@@ -2,7 +2,7 @@
   <div class="container">
     <GlobalHeader :user="currentUser" />
     <!-- <ColumnList :list="list" /> -->
-    <validate-form  @form-submit="OnFormSubmit">
+    <validate-form @form-submit="OnFormSubmit">
       <div class="mb-3">
         <label class="form-label">邮箱地址</label>
         <validate-input
@@ -10,6 +10,7 @@
           v-model="emailVal"
           placeholder="请输入邮箱"
           type="text"
+          ref="inputRef"
         ></validate-input>
         {{ emailVal }}
       </div>
@@ -79,8 +80,9 @@ export default defineComponent({
     ValidateForm
   },
   setup() {
+    const inputRef = ref<any>(null);
     const emailVal = ref("vimalakirti");
-    const passwordVal = ref("123");
+    const passwordVal = ref("");
     const emailRules: RulesProp = [
       { type: "required", message: "电子邮箱地址不能为空" },
       { type: "email", message: "请输入正确的电子邮箱格式" }
@@ -89,7 +91,7 @@ export default defineComponent({
       { type: "required", message: "密码不能为空" }
     ];
     const OnFormSubmit = (result: boolean) => {
-      console.log("123", result);
+      console.log(inputRef.value.validateInput());
     };
     return {
       // list: testData,
@@ -98,7 +100,8 @@ export default defineComponent({
       emailVal,
       passwordVal,
       passwordRules,
-      OnFormSubmit
+      OnFormSubmit,
+      inputRef
     };
   }
 });
